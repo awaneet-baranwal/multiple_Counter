@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- react is a ui manipulation (logic)library -->
+<script
+src="https://unpkg.com/react@18/umd/react.development.js"
+crossorigin
+></script>
+<!-- frontend -> dom --><!-- react dom -> webpage ke andar react lib ke help actual changes leke aao -->
+<script
+src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+crossorigin
+></script>
+<!-- to convert jsx to js -->
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <title>Document</title>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+    
+    function Counter(props){
+        const [count,countChange]=React.useState(0);
+        let num = props.count
+        function increament(){
+           countChange(count+1)
+        }
+        function decreament(){
+            countChange(count-1)
+        }
+        return (
+            
+            <div>
+                <button onClick={increament} >+</button>
+                <p>count: {count} Counter = {num}</p>
+                <button onClick={decreament}>-</button>
+            </div>
+        )
+    }
+    function Counters(){
+        return(
+            <div>
+                <Counter count={1}/>   
+                <Counter count={2}/>   
+                <Counter count={3}/>   
+                <Counter count={4}/>   
+            </div>
+        )
+    }
+
+        ReactDOM.render(
+            <Counters/>,
+            document.querySelector("#root")
+        )
+    </script>
+</body>
+</html>
