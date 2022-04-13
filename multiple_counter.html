@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- react is a ui manipulation (logic)library -->
+<script
+src="https://unpkg.com/react@18/umd/react.development.js"
+crossorigin
+></script>
+<!-- frontend -> dom --><!-- react dom -> webpage ke andar react lib ke help actual changes leke aao -->
+<script
+src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+crossorigin
+></script>
+<!-- to convert jsx to js -->
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"></script>
+    <title>Document</title>
+    <style>
+        #root{
+            display: flex;
+        }
+        .head-elememts{
+            display: flex;
+        }
+        .app{
+            display: flex;
+            flex-direction: column;
+        }
+        .head{
+            /* display: flex; */
+            height: 30vh;
+            border-bottom: 2px solid gray;
+            width: 100vw;
+            /* margin-top: 10px; */
+        }
+        button{
+            padding: 5px 10px;
+            margin: 10px 0;
+        }
+        .counters{
+            display: flex;
+            /* height: 80vh; */
+            width: 100vw;
+            /* border: 1px solid gray; */
+            margin: 50px 0;
+        }
+        .counter{
+            margin: 100px;
+            display: flex;
+            width: 50%;
+            margin:30px auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+    function Head(props){
+        
+        const [value1,updateValue1] = React.useState();
+        const [value2,updateValue2] = React.useState();
+        function setInput1(e){
+            updateValue1(e.target.value);
+        }
+        function setInput2(e){
+            updateValue2(e.target.value);
+        }
+        function addTask(){
+            console.log(value1);
+            console.log(value2);
+            props.parentGetTask(value1,value2)
+        }
+        return(
+            <div className="head">
+               <h3>Reset</h3>
+                <div className="head-elememts">
+                    <h4>Counter</h4> <input type="text"value={value1}onChange={setInput1}/>    
+                    <h4>Count value</h4> <input type="text" value={value2}onChange={setInput2}/>        
+                </div>
+               <div className="buttton">
+                <button onClick={addTask}>Reset Counter</button> 
+               </div>
+            </div>
+        )
+    }
+    function Counter(props){
+        const [value,setValue] = React.useState(0);
+        function increament(){
+           setValue(Number(value)+1)
+        }
+        function decreament(){
+            setValue(Number(value)-1)
+        }
+        let num = props.number
+        console.log("counter "+props.counter+"countValue "+props.countValue);
+        if(num==props.counter && value!=props.countValue){
+            setValue(props.countValue)
+            //reset apna counter
+            props.resetParentProps();
+        }
+        
+        return(
+            <div className="counter">
+                <h3>number {num}</h3>
+                <button onClick={increament}>+</button>
+                <p>Count: {value}</p>
+                <button onClick={decreament}>-</button>
+            </div>
+        )
+    }      
+    function Counters(props){
+        let counter = props.Counter;
+        let countValue = props.CountValue;
+        let resetParentProps = props.resetParentProps;
+        // console.log("in counters",counter,countValue);
+        return(
+            <div className="counters">
+                <Counter number={1} counter={counter} countValue={countValue} resetParentProps={resetParentProps}/>
+                <Counter number={2} counter={counter} countValue={countValue} resetParentProps={resetParentProps}/>
+                <Counter number={3} counter={counter} countValue={countValue} resetParentProps={resetParentProps}/>
+            </div>
+        )
+    }  
+    
+    function App(){
+        const [counter,setCounter] = React.useState();
+        const [countValue,setCountValue] = React.useState();
+        function getTask(currVal1,currVal2){
+            console.log("In todo value1 "+currVal1+" and value2 are "+currVal2);
+            setCounter(currVal1)
+            setCountValue(currVal2)
+        }
+
+        function resetParentProps(){
+            setCounter("");
+            setCountValue("");
+
+        }
+        return(
+            <div className="app">
+              <Head parentGetTask={getTask}/>
+              <Counters Counter={counter} CountValue={countValue} resetParentProps={resetParentProps}/>    
+            </div>
+        )
+    }
+   
+
+        ReactDOM.render(
+            <App/>,
+            document.querySelector("#root")
+        )
+    </script>
+</body>
+</html>
